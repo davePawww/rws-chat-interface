@@ -79,8 +79,8 @@ function Message({ msg }: MessageProps) {
         <UserAvatar user={msg.user} />
         <p
           className={cn(
-            'bg-secondary max-w-3/5 rounded-md p-2',
-            msg.user.name === 'Chad CN' ? 'bg-primary' : '',
+            'bg-secondary border-muted-foreground/10 max-w-3/5 rounded-md border p-2 shadow-sm',
+            msg.user.name === 'Chad CN' ? 'bg-primary text-white' : '',
           )}
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
