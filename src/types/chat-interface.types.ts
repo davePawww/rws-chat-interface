@@ -1,8 +1,11 @@
+import type { UUID } from 'crypto';
+
 export type ChatInterfaceStore = {
   messages: TMessage[];
+  sendNewMessage: (message: string) => void;
   user: User | null;
   setUser: (user: User) => void;
-  toggleUserReaction: (msgId: number, newReaction: Reaction) => void;
+  toggleUserReaction: (msgId: string, newReaction: Reaction) => void;
 };
 
 export type User = {
@@ -14,10 +17,10 @@ export type Emoji = '👍' | '❤️' | '😂' | '😮' | '😢' | '🙏' | '�
 export type Reaction = Partial<Record<User['name'], Emoji>>;
 
 export type TMessage = {
-  id: number;
+  id: UUID;
   user: User;
   message: string;
   time: string;
-  replyTo: number | null;
+  replyTo: UUID | null; // reply to a message
   reactions: Reaction | null;
 };

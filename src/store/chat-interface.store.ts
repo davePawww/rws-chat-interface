@@ -2,37 +2,24 @@ import { create } from 'zustand';
 
 import type { ChatInterfaceStore, TMessage } from '@/types/chat-interface.types';
 import { formatMessageTime } from '@/utils/format-message-time';
-import { users } from '@/utils/users';
 
-const mockMessage: TMessage[] = [
-  {
-    id: 1,
-    user: users[0],
-    message: 'Hello there',
-    time: formatMessageTime(new Date()),
-    replyTo: null,
-    reactions: { 'Evil Rabbit': '👍', 'Chad CN': '👍', Dave: '❤️', John: '🎉' },
-  },
-  {
-    id: 2,
-    user: users[1],
-    message: 'Hi, how you doin? I have been trying to reach out to you for the last year',
-    time: formatMessageTime(new Date()),
-    replyTo: 1,
-    reactions: { 'Evil Rabbit': '👍' },
-  },
-  {
-    id: 3,
-    user: users[0],
-    message: "s'all good man",
-    time: formatMessageTime(new Date()),
-    replyTo: 2,
-    reactions: null,
-  },
-];
+export const useChatInterfaceStore = create<ChatInterfaceStore>((set, get) => ({
+  messages: [],
+  sendNewMessage: (message) => {
+    const currentUser = get().user;
+    if (!currentUser) return;
 
-export const useChatInterfaceStore = create<ChatInterfaceStore>((set) => ({
-  messages: mockMessage,
+    const newMessage: TMessage = {
+      id: crypto.randomUUID(),
+      user: currentUser,
+      message,
+      time: formatMessageTime(new Date()),
+      replyTo: null,
+      reactions: null,
+    };
+
+    set((s) => ({ messages: [newMessage, ...s.messages] }));
+  },
   user: null,
   setUser: (selectedUser) => set({ user: selectedUser }),
   toggleUserReaction: (msgId, newReaction) =>
