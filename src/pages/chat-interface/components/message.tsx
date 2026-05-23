@@ -38,7 +38,6 @@ export default function Message({ msg }: MessageProps) {
           )}
         >
           {msg.message}
-
           {msg.reactions && <MessageReactions reactions={msg.reactions} />}
         </div>
         {isHovered && (
