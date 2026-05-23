@@ -2,6 +2,7 @@ import { EllipsisVertical } from 'lucide-react';
 import { useState } from 'react';
 
 import { cn } from '@/lib/utils';
+import MessageReactions from '@/pages/chat-interface/components/message-reactions';
 import SelectReaction from '@/pages/chat-interface/components/select-reaction';
 import UserAvatar from '@/pages/chat-interface/components/user-avatar';
 import type { TMessage } from '@/types/chat-interface.types';
@@ -12,7 +13,6 @@ type MessageProps = {
 
 export default function Message({ msg }: MessageProps) {
   const [isHovered, setIsHovered] = useState(false);
-  const reactionCount = msg.reactions ? Object.keys(msg.reactions).length : 0;
 
   return (
     <div onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
@@ -38,23 +38,8 @@ export default function Message({ msg }: MessageProps) {
           )}
         >
           {msg.message}
-          {msg.reactions && (
-            <span
-              className={cn(
-                'bg-secondary absolute right-2 -bottom-2.5 flex items-end gap-0.5 rounded-full border px-1.5',
-                reactionCount <= 1 && 'py-0.5',
-              )}
-            >
-              {[...new Set(Object.values(msg.reactions))].slice(0, 3).map((emoji) => (
-                <p key={emoji} className="text-[9px]">
-                  {emoji}
-                </p>
-              ))}
-              {reactionCount > 1 && (
-                <p className="text-muted-foreground pl-1 text-xs">{reactionCount}</p>
-              )}
-            </span>
-          )}
+
+          {msg.reactions && <MessageReactions reactions={msg.reactions} />}
         </div>
         {isHovered && (
           <div className="flex items-center">
