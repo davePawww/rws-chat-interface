@@ -18,8 +18,8 @@ export default function Message({ msg }: MessageProps) {
     <div onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
       <p
         className={cn(
-          'text-muted-foreground ml-9 text-xs font-medium',
-          msg.user.name === 'Chad CN' ? 'mr-9 text-right' : '',
+          'text-muted-foreground ml-12 text-xs font-medium',
+          msg.user.name === 'Chad CN' ? 'mr-12 text-right' : '',
         )}
       >
         {msg.user.name}

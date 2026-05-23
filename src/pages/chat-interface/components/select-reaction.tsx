@@ -9,7 +9,7 @@ import type { Emoji } from '@/types/chat-interface.types';
 const EMOJI_LIST: Emoji[] = ['👍', '❤️', '😂', '😮', '😢', '🙏', '🔥', '🎉'];
 
 type SelectReactionProps = {
-  messageId: number;
+  messageId: string;
 };
 
 export default function SelectReaction({ messageId }: SelectReactionProps) {
