@@ -7,14 +7,22 @@ import { cn } from '@/lib/utils';
 import { useChatInterfaceStore } from '@/store/chat-interface.store';
 
 export default function MessageInput() {
-  const [msgInput, setMsgInput] = useState('');
+  const editingMessage = useChatInterfaceStore((s) => s.editingMessage);
+  const [msgInput, setMsgInput] = useState(editingMessage?.message ?? '');
   const sendNewMessage = useChatInterfaceStore((s) => s.sendNewMessage);
   const replyingTo = useChatInterfaceStore((s) => s.replyingTo);
   const setReplyingTo = useChatInterfaceStore((s) => s.setReplyingTo);
+  const setEditingMessage = useChatInterfaceStore((s) => s.setEditingMessage);
+  const editMessage = useChatInterfaceStore((s) => s.editMessage);
 
   // Send button click
   const handleSendBtn = () => {
-    sendNewMessage(msgInput, replyingTo);
+    if (editingMessage) {
+      editMessage(editingMessage.id, msgInput);
+      setEditingMessage(null);
+    } else {
+      sendNewMessage(msgInput, replyingTo);
+    }
     setMsgInput('');
     setReplyingTo(null);
   };
@@ -23,7 +31,12 @@ export default function MessageInput() {
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
-      sendNewMessage(msgInput, replyingTo);
+      if (editingMessage) {
+        editMessage(editingMessage.id, msgInput);
+        setEditingMessage(null);
+      } else {
+        sendNewMessage(msgInput, replyingTo);
+      }
       setMsgInput('');
       setReplyingTo(null);
     }

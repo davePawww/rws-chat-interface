@@ -4,6 +4,9 @@ export type ChatInterfaceStore = {
   messages: TMessage[];
   sendNewMessage: (message: string, replyTo?: TMessage | null) => void;
   deleteMessage: (msgId: UUID) => void;
+  editingMessage: TMessage | null;
+  setEditingMessage: (message: TMessage | null) => void;
+  editMessage: (msgId: UUID, message: string) => void;
   user: User | null;
   setUser: (user: User) => void;
   toggleUserReaction: (msgId: string, newReaction: Reaction) => void;

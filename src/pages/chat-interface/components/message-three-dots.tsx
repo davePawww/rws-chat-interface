@@ -19,6 +19,7 @@ type MessageThreeDotsProps = {
 export default function MessageThreeDots({ message, open, setOpen }: MessageThreeDotsProps) {
   const setReplyingTo = useChatInterfaceStore((s) => s.setReplyingTo);
   const deleteMessage = useChatInterfaceStore((s) => s.deleteMessage);
+  const setEditingMessage = useChatInterfaceStore((s) => s.setEditingMessage);
 
   return (
     <DropdownMenu open={open} onOpenChange={setOpen}>
@@ -37,7 +38,7 @@ export default function MessageThreeDots({ message, open, setOpen }: MessageThre
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuItem onSelect={() => setReplyingTo(message)}>Reply</DropdownMenuItem>
-        <DropdownMenuItem>Edit</DropdownMenuItem>
+        <DropdownMenuItem onSelect={() => setEditingMessage(message)}>Edit</DropdownMenuItem>
         <DropdownMenuItem onSelect={() => deleteMessage(message.id)}>Delete</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
