@@ -20,6 +20,8 @@ export const useChatInterfaceStore = create<ChatInterfaceStore>((set, get) => ({
 
     set((s) => ({ messages: [newMessage, ...s.messages] }));
   },
+  deleteMessage: (msgId) =>
+    set((s) => ({ messages: s.messages.filter((msg) => msg.id !== msgId) })),
   user: null,
   setUser: (selectedUser) => set({ user: selectedUser }),
   toggleUserReaction: (msgId, newReaction) =>

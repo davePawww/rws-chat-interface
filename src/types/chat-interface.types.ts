@@ -3,6 +3,7 @@ import type { UUID } from 'crypto';
 export type ChatInterfaceStore = {
   messages: TMessage[];
   sendNewMessage: (message: string, replyTo?: TMessage | null) => void;
+  deleteMessage: (msgId: UUID) => void;
   user: User | null;
   setUser: (user: User) => void;
   toggleUserReaction: (msgId: string, newReaction: Reaction) => void;
