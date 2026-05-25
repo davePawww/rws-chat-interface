@@ -1,8 +1,8 @@
-import { EllipsisVertical } from 'lucide-react';
 import { useState } from 'react';
 
 import { cn } from '@/lib/utils';
 import MessageReactions from '@/pages/chat-interface/components/message-reactions';
+import MessageThreeDots from '@/pages/chat-interface/components/message-three-dots';
 import SelectReaction from '@/pages/chat-interface/components/select-reaction';
 import UserAvatar from '@/pages/chat-interface/components/user-avatar';
 import type { TMessage } from '@/types/chat-interface.types';
@@ -13,6 +13,10 @@ type MessageProps = {
 
 export default function Message({ msg }: MessageProps) {
   const [isHovered, setIsHovered] = useState(false);
+  const [reactionsOpen, setReactionsOpen] = useState(false);
+  const [threeDotsMenuOpen, setThreeDotsMenuOpen] = useState(false);
+
+  const isVisible = isHovered || reactionsOpen || threeDotsMenuOpen;
 
   return (
     <div onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
@@ -20,6 +24,7 @@ export default function Message({ msg }: MessageProps) {
         className={cn(
           'text-muted-foreground ml-12 text-xs font-medium',
           msg.user.name === 'Chad CN' ? 'mr-12 text-right' : '',
+          msg.replyTo ? 'mb-7' : '',
         )}
       >
         {msg.user.name}
@@ -35,18 +40,27 @@ export default function Message({ msg }: MessageProps) {
           className={cn(
             'bg-secondary border-muted-foreground/10 relative max-w-3/5 rounded-4xl border px-3 py-2 shadow-sm',
             msg.user.name === 'Chad CN' ? 'bg-primary text-white' : '',
+            msg.replyTo ? 'relative' : '',
           )}
         >
+          {msg.replyTo && (
+            <span className="bg-muted text-muted-foreground absolute -top-7 -z-10 line-clamp-1 rounded-t-xl p-2 text-xs">
+              {msg.replyTo?.message}
+            </span>
+          )}
           {msg.message}
           {msg.reactions && <MessageReactions reactions={msg.reactions} />}
         </div>
-        {isHovered && (
-          <div className="flex items-center">
-            <SelectReaction messageId={msg.id} />
-            <EllipsisVertical size={18} className="text-muted-foreground" />
-            <p className="text-muted-foreground text-xs font-medium">{msg.time}</p>
-          </div>
-        )}
+        <div
+          className={cn(
+            'flex items-center transition-opacity duration-150',
+            isVisible ? 'opacity-100' : 'pointer-events-none opacity-0',
+          )}
+        >
+          <SelectReaction messageId={msg.id} open={reactionsOpen} setOpen={setReactionsOpen} />
+          <MessageThreeDots message={msg} open={threeDotsMenuOpen} setOpen={setThreeDotsMenuOpen} />
+          <p className="text-muted-foreground text-xs font-medium">{msg.time}</p>
+        </div>
       </div>
     </div>
   );
