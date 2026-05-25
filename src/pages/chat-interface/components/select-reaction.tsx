@@ -1,5 +1,4 @@
 import { SmilePlus } from 'lucide-react';
-import { useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
@@ -10,10 +9,11 @@ const EMOJI_LIST: Emoji[] = ['👍', '❤️', '😂', '😮', '😢', '🙏', '
 
 type SelectReactionProps = {
   messageId: string;
+  open: boolean;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export default function SelectReaction({ messageId }: SelectReactionProps) {
-  const [open, setOpen] = useState(false);
+export default function SelectReaction({ messageId, open, setOpen }: SelectReactionProps) {
   const user = useChatInterfaceStore((s) => s.user);
   const toggleUserReaction = useChatInterfaceStore((s) => s.toggleUserReaction);
 
@@ -28,6 +28,7 @@ export default function SelectReaction({ messageId }: SelectReactionProps) {
         <Button
           className="border-muted-foreground/20 text-muted-foreground size-5 rounded-full border"
           variant="secondary"
+          aria-label="Select reaction"
         >
           <SmilePlus />
         </Button>

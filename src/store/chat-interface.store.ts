@@ -5,7 +5,7 @@ import { formatMessageTime } from '@/utils/format-message-time';
 
 export const useChatInterfaceStore = create<ChatInterfaceStore>((set, get) => ({
   messages: [],
-  sendNewMessage: (message) => {
+  sendNewMessage: (message, replyTo = null) => {
     const currentUser = get().user;
     if (!currentUser) return;
 
@@ -14,7 +14,7 @@ export const useChatInterfaceStore = create<ChatInterfaceStore>((set, get) => ({
       user: currentUser,
       message,
       time: formatMessageTime(new Date()),
-      replyTo: null,
+      replyTo,
       reactions: null,
     };
 
@@ -44,4 +44,6 @@ export const useChatInterfaceStore = create<ChatInterfaceStore>((set, get) => ({
         };
       }),
     })),
+  replyingTo: null,
+  setReplyingTo: (message) => set({ replyingTo: message }),
 }));
