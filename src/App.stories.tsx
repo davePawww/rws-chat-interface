@@ -8,7 +8,7 @@ import { users } from '@/utils/users';
 
 const mockMessages: TMessage[] = [
   {
-    id: crypto.randomUUID(),
+    id: '8f4c3b1e-9d7a-4c52-8f6d-2a1b7e93c4f1',
     user: users[0],
     message: 'Hello there, Storybook!',
     time: formatMessageTime(new Date()),
@@ -16,11 +16,18 @@ const mockMessages: TMessage[] = [
     reactions: { [users[1].name]: '❤️' },
   },
   {
-    id: crypto.randomUUID(),
+    id: 'd2a9f6c8-5b41-47ee-a3d0-91f84c7b2e65',
     user: users[1],
-    message: 'Hi there, Chad!',
+    message: 'Hi there, Chad! What are you up to these days?',
     time: formatMessageTime(new Date()),
-    replyTo: null,
+    replyTo: {
+      id: '8f4c3b1e-9d7a-4c52-8f6d-2a1b7e93c4f1',
+      user: users[0],
+      message: 'Hello there, Storybook!',
+      time: formatMessageTime(new Date()),
+      replyTo: null,
+      reactions: { [users[1].name]: '❤️' },
+    },
     reactions: { [users[1].name]: '❤️', [users[0].name]: '🎉', Dave: '🎉', Luke: '🔥', Tom: '😂' },
   },
 ];
@@ -51,5 +58,36 @@ export const WithMessages: Story = {
     },
   ],
 };
+export const Replying: Story = {
+  decorators: [
+    (Story) => {
+      useChatInterfaceStore.setState({
+        user: users[0],
+        messages: mockMessages,
+        replyingTo: {
+          id: 'd2a9f6c8-5b41-47ee-a3d0-91f84c7b2e65',
+          user: users[1],
+          message: 'Hi there, Chad! What are you up to these days?',
+          time: formatMessageTime(new Date()),
+          replyTo: {
+            id: '8f4c3b1e-9d7a-4c52-8f6d-2a1b7e93c4f1',
+            user: users[0],
+            message: 'Hello there, Storybook!',
+            time: formatMessageTime(new Date()),
+            replyTo: null,
+            reactions: { [users[1].name]: '❤️' },
+          },
+          reactions: {
+            [users[1].name]: '❤️',
+            [users[0].name]: '🎉',
+            Dave: '🎉',
+            Luke: '🔥',
+            Tom: '😂',
+          },
+        },
+      });
 
-// WithReplies
+      return <Story />;
+    },
+  ],
+};
