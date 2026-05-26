@@ -12,6 +12,8 @@ export type ChatInterfaceStore = {
   toggleUserReaction: (msgId: string, newReaction: Reaction) => void;
   replyingTo: TMessage | null;
   setReplyingTo: (message: TMessage | null) => void;
+  userIsTyping: boolean;
+  setUserIsTyping: (isTyping: boolean) => void;
 };
 
 export type User = {

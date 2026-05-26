@@ -1,5 +1,5 @@
 import { Send, X } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
@@ -14,6 +14,7 @@ export default function MessageInput() {
   const setReplyingTo = useChatInterfaceStore((s) => s.setReplyingTo);
   const setEditingMessage = useChatInterfaceStore((s) => s.setEditingMessage);
   const editMessage = useChatInterfaceStore((s) => s.editMessage);
+  const setUserIsTyping = useChatInterfaceStore((s) => s.setUserIsTyping);
 
   // Send button click
   const handleSendBtn = () => {
@@ -41,6 +42,12 @@ export default function MessageInput() {
       setReplyingTo(null);
     }
   };
+
+  useEffect(() => {
+    setUserIsTyping(true);
+    const timeoutId = setTimeout(() => setUserIsTyping(false), 3000);
+    return () => clearTimeout(timeoutId);
+  }, [msgInput, setUserIsTyping]);
 
   return (
     <div className={cn('flex gap-2', replyingTo ? 'mt-10' : 'mt-4')}>

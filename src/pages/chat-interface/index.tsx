@@ -5,11 +5,16 @@ import { useChatInterfaceStore } from '@/store/chat-interface.store';
 
 export default function ChatInterfacePage() {
   const editingMessage = useChatInterfaceStore((s) => s.editingMessage);
+  const user = useChatInterfaceStore((s) => s.user);
+  const userIsTyping = useChatInterfaceStore((s) => s.userIsTyping);
 
   return (
     <>
       <UserDropdown />
       <MessageList />
+      {userIsTyping && user && (
+        <p className="text-muted-foreground text-right text-xs">{user?.name} is typing ...</p>
+      )}
       <MessageInput key={editingMessage?.id ?? 'new'} />
     </>
   );

@@ -57,4 +57,6 @@ export const useChatInterfaceStore = create<ChatInterfaceStore>((set, get) => ({
     })),
   replyingTo: null,
   setReplyingTo: (message) => set({ replyingTo: message }),
+  userIsTyping: false,
+  setUserIsTyping: (isTyping) => set({ userIsTyping: isTyping }),
 }));
